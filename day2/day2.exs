@@ -11,18 +11,31 @@ defmodule Execute do
       _ -> IO.puts "Problem"
     end
   end
+
   def beforeRunning(code, noun, verb) do
     List.replace_at(code, 1, noun) |> List.replace_at(2, verb)
   end
+
+  def numberCombinations(range) do
+    for x <- range, y <- range  do
+      {x, y}
+    end
+  end
+
+  def calculateValue(instructions, x, y) do
+    instructions
+    |> Execute.beforeRunning(x, y)
+    |> Execute.executeInstructions()
+  end
+
   def findSolution(instructions, result) do
-    Enum.each(0..99, fn (x) ->
-      Enum.each(0..99, fn (y) ->
-        value = instructions |> beforeRunning(x, y) |> executeInstructions()
-        if value == result do
-          IO.inspect 100 * x + y
-        end
-      end)
-    end)
+    numberCombinations(0..99)
+    |> Enum.find(fn {x, y} -> calculateValue(instructions, x, y) == result end)
+    |> display()
+  end
+
+  def display(tuple) do
+    IO.inspect 100 * elem(tuple, 0) + elem(tuple, 1)
   end
 end
 
