@@ -41,7 +41,7 @@ end
 
 case File.read("input.txt") do
   {:ok, body} ->
-    IO.inspect body
+    body
     |> String.split(",")
     |> Enum.map(&String.to_integer/1)
     |> Execute.findSolution(19690720)
